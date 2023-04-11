@@ -1,15 +1,8 @@
-exports.login = function login(req, res) {
-  res.send("You got a post login");
-};
-
-const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const main = require("./database");
 
-const router = express.Router();
-
-router.post("/", async (req, res) => {
+exports.login = function login(req, res) {
   try {
     const { username, password } = req.body;
     const { usersCollection } = await main();
@@ -32,6 +25,5 @@ router.post("/", async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 
-module.exports = router;
