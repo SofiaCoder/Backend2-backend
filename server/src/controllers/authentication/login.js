@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const main = require("./database");
 
-exports.login = function login(req, res) {
+exports.login = async function login(req, res) {
   try {
     const { username, password } = req.body;
     const { usersCollection } = await main();
