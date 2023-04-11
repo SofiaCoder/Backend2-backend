@@ -1,5 +1,7 @@
 const express = require('express')
 const server = express()
+server.use(express.json());
+
 const { authRouter } = require('./routes/authRouter')
 const { postRouter } = require('./routes/postRouter')
 
