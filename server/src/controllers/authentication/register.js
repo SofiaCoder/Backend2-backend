@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const main = require("./database");
 
-exports.register = function register(req, res) => {
+exports.register = function register(req, res) {
   try {
     const { username, password } = req.body;
     const { usersCollection } = await main();
