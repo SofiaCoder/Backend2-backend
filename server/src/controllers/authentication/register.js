@@ -1,5 +1,5 @@
 const bcrypt = require("bcrypt");
-const main = require("./database");
+const main = require("../../databas");
 
 exports.register = async function register(req, res) {
   try {
