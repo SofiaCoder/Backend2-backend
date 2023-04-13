@@ -10,9 +10,10 @@ exports.authMiddleware = function authMiddleware(req, res, next) {
     }
 
     try {
-        const decoded = jwt.verify(authKey, process.env.secret)
+        const decoded = jwt.verify(authKey, process.env.JWT_SECRET)
         const { id } = decoded
         req.userID = id
+        
         next()
     } catch (error){
         res.status(401).send('Wrong or invalid token' + error)
