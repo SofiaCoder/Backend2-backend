@@ -15,11 +15,16 @@ exports.postPosts = async function postPosts(req, res) {
             res.status(400).send(error.details[0].message)
             return;
         }
-        const postBody = value;
+        const { postBody } = value;
 
-        const posts = await postsCollection.insertOne({user_id: userID, post: postBody})
+        const dateTime = new Date().toLocaleString();
+        console.log("🚀 ~ file: postPosts.js:21 ~ postPosts ~ dateTime:", dateTime)
+        
 
-        res.status(200).send(`Post added with id: ${posts.insertedId}`)
+        const posts = await postsCollection.insertOne({user_id: userID, date: dateTime, post: postBody})
+        
+        res.status(200).send(`Text posted with id: ${posts.insertedId}`)
+        
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
     }
