@@ -18,8 +18,6 @@ exports.postPosts = async function postPosts(req, res) {
         const { postBody } = value;
 
         const dateTime = new Date().toLocaleString();
-        console.log("🚀 ~ file: postPosts.js:21 ~ postPosts ~ dateTime:", dateTime)
-        
 
         const posts = await postsCollection.insertOne({user_id: userID, date: dateTime, post: postBody})
         
