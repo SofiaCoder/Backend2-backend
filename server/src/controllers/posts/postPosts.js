@@ -12,8 +12,7 @@ exports.postPosts = async function postPosts(req, res) {
         
         const { value, error } = schema.validate(req.body)
         if(error) {
-            res.status(400).send(error.details[0].message)
-            return;
+            return res.status(400).send(error.details[0].message)
         }
         const { postBody } = value;
 
