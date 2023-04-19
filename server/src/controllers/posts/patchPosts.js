@@ -23,6 +23,7 @@ exports.patchPosts = async function patchPosts(req, res) {
         postsCollection.updateOne({_id: postIDtoPatch}, {$set: {post: newPostBody, updated: dateTime}}, { upsert: true })
 
         res.status(200).send(`Post updated`)
+        
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
     }
