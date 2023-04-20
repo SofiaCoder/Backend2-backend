@@ -18,7 +18,7 @@ exports.postPosts = async function postPosts(req, res) {
 
         const dateTime = new Date().toLocaleString();
 
-        const posts = await postsCollection.insertOne({user_id: userID, date: dateTime, post: postBody})
+        const posts = await postsCollection.insertOne({user_id: userID, date: dateTime, post: postBody, comments: []})
         
         res.status(200).send(`Text posted with id: ${posts.insertedId}`)
         
