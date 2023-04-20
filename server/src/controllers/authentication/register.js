@@ -12,7 +12,7 @@ exports.register = async function register(req, res) {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { username, password: hashedPassword };
+    const newUser = { username, password: hashedPassword, friends: [] };
     await usersCollection.insertOne(newUser);
 
     res.status(201).json({ message: "User created successfully" });
