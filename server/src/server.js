@@ -11,6 +11,7 @@ server.use(
   })
 );
 
+
 server.use("/auth", authRouter);
 server.use("/post", postRouter);
 
