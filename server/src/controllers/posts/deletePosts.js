@@ -17,11 +17,10 @@ exports.deletePosts = async function deletePosts(req, res) {
         const postIDtoDelete = new ObjectId(postID)
 
         const posts = await postsCollection.deleteOne({"_id": postIDtoDelete})
-        
         if (posts.deletedCount === 1) {
             res.status(200).send(`Post deleted successfully`)
         } else {
-            res.status(500).send(`Query didnt match any document. 0 document deleted.`)
+            res.status(404).send(`Query didnt match any document. 0 document deleted.`)
         }
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)

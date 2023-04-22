@@ -20,9 +20,13 @@ exports.patchPosts = async function patchPosts(req, res) {
         const postIDtoPatch = new ObjectId(postID)
         const dateTime = new Date().toLocaleString();
 
-        postsCollection.updateOne({_id: postIDtoPatch}, {$set: {post: newPostBody, updated: dateTime}}, { upsert: true })
+        const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$set: {post: newPostBody, updated: dateTime}}, { upsert: true })
+        if (result.modifiedCount === 0) {
+            res.status(404).send(`Query didnt match any document. 0 document changed.`)
+        } else {
+            res.status(200).send(`Post updated`)
+        }
 
-        res.status(200).send(`Post updated`)
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
     }
