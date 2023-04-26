@@ -1,7 +1,5 @@
 const request = require("supertest");
 const { server } = require("./server");
-const main = require("../src/databas")
-
 
 describe("Testing authRouter endpoints", () => {
   test("POST /auth/register should return 201 if req.body is good", async () => {
@@ -36,6 +34,11 @@ describe("Testing authRouter endpoints", () => {
     expect(respons.status).toBe(401);
   });
 });
+
+afterAll( async () => {
+  const { client } = await main();
+  await client.close();
+})
 
 afterAll(async () => {
   const { usersCollection } = await main()
