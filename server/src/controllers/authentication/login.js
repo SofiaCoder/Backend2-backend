@@ -28,7 +28,7 @@ exports.login = async function login(req, res) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.cookie("authKey", token, {
@@ -40,6 +40,6 @@ exports.login = async function login(req, res) {
     res.status(200).json({ message: "Successfully login" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error " });
   }
 };
