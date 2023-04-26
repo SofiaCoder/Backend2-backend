@@ -36,11 +36,9 @@ describe("Testing authRouter endpoints", () => {
 });
 
 afterAll( async () => {
+  const { usersCollection } = await main()
+  await usersCollection.deleteOne({username: "Soffi"})
   const { client } = await main();
   await client.close();
 })
 
-afterAll(async () => {
-  const { usersCollection } = await main()
-  await usersCollection.deleteOne({username: "Soffi"})
-})
