@@ -6,6 +6,7 @@ exports.postPosts = async function postPosts(req, res) {
   try {
     const { postsCollection, usersCollection } = await main();
     const userID = req.userID;
+    const username = req.username;
 
     const schema = joi.object({
       postBody: joi.string().min(1).max(250).required(),
@@ -17,14 +18,15 @@ exports.postPosts = async function postPosts(req, res) {
     }
     const { postBody } = value;
     const dateTime = new Date().toLocaleString();
-    const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
+    //const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
 
     const posts = await postsCollection.insertOne({
       user_id: userID,
-      username: user.username,
+      username: username,
       date: dateTime,
       post: postBody,
       comments: [],
+      likes: []
     });
 
     res.status(200).send(`Text posted with id: ${posts.insertedId}`);
