@@ -13,5 +13,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: "18.x"
+        env:
+          DB_URL: ${{secrets.DB_URL}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
       - run: npm i
       - run: npm run test
