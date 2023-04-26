@@ -11,19 +11,17 @@ exports.getFollowedUsersPosts = async function getFollowedUsersPosts(req, res) {
         if(!user || user.length === 0) {
             return res.status(404).send('No user was found.')
         }
-        const friends = user.friends;
+        const friends = user.friends
 
         const allFriendsIDs = await Promise.all(friends?.map(async (friend) => {
             const friendID = await usersCollection.findOne({username: friend}, {projection: {_id: 1}})
             return friendID?._id.toString();
         }));
-        console.log("🚀 ~ file: getFollowedUsersPosts.js:20 ~ allFriendsIDs ~ allFriendsIDs:", allFriendsIDs)
 
         const allFriendsPosts = await Promise.all(allFriendsIDs?.map(async (id) => {
-            const friendPost = await postsCollection.find({user_id: id}).toArray()
+            const friendPost = await postsCollection.find({_id: id}).toArray()
             return friendPost
         }))
-        console.log("🚀 ~ file: getFollowedUsersPosts.js:25 ~ allFriendsPosts ~ allFriendsPosts:", allFriendsPosts)
 
         if(allFriendsPosts.length === 0 || !allFriendsPosts) {
             res.status(404).send('Your friends does not have any posts jet')
