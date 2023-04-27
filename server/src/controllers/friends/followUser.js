@@ -16,12 +16,24 @@ exports.followUser = async function followUser(req, res) {
         const { friendname } = value;
         userIDtoinsert = new ObjectId(userID)
 
-        const response = usersCollection.updateOne({_id: userIDtoinsert}, {$push: {friends: friendname}})
-        if(response.matchedCount === 0) {
-            res.status(404).send(`Wrong user id, ${userIDtoinsert} was not found`)
-        } else {
-            res.status(200).send(`You're now following ${friendname}`)
+        const user = await usersCollection.findOne({_id: userIDtoinsert})
+        const friendArray = user.friends
+        const alreadyFriend = friendArray.findIndex(friend => friend === friendname)
+        
+        if(alreadyFriend !== -1) {
+            const result = await usersCollection.updateOne({_id: userIDtoinsert}, {$pull: {friends: friendname}})
+            if(result.matchedCount === 0) {
+                return res.status(404).send(`Wrong user id, ${userIDtoinsert} was not found`)
+            }
+            return res.status(200).send(`Unfollowed ${friendname}`)
         }
+        
+        const result = await usersCollection.updateOne({_id: userIDtoinsert}, {$push: {friends: friendname}})
+        if(result.matchedCount === 0) {
+            return res.status(404).send(`Wrong user id, ${userIDtoinsert} was not found`)
+        } 
+        
+        res.status(200).send(`You're now following ${friendname}`)
         
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
