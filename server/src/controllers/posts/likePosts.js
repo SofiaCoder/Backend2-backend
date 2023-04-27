@@ -27,17 +27,16 @@ exports.likePosts = async function likePosts(req, res) {
             const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$pull: {likes: username}})
                 if (result.modifiedCount === 0) {
                     return res.status(404).send('Query didnt match any document. 0 document changed.')
-                } else {
-                    return res.status(200).send('User unliked this post')
-                }
+                } 
+                return res.status(200).send('User unliked this post')
         }    
 
         const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$push: {likes: username}})
         if (result.modifiedCount === 0) {
-            res.status(404).send('Query didnt match any document. 0 document changed.')
-        } else {
-            res.status(200).send('User liked this post')
-        }
+            return res.status(404).send('Query didnt match any document. 0 document changed.')
+        } 
+            return res.status(200).send('User liked this post')
+        
 
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)

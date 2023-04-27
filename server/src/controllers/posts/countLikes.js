@@ -23,9 +23,9 @@ exports.countLikes = async function countLikes(req, res) {
             return res.status(404).send(`No post found with id: ${postIDtoGet}`)
         }
         const likeArray = result.likes
-        const noOfLikes = likeArray.length
+        const amountOfLikes = likeArray.length
         
-        res.status(200).json(noOfLikes)
+        res.status(200).json(amountOfLikes)
 
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
