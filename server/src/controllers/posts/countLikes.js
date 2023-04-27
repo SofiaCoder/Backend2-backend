@@ -17,17 +17,15 @@ exports.countLikes = async function countLikes(req, res) {
 
         const { postID } = value;
         const postIDtoGet = new ObjectId(postID)
-        const conditionQuery = {
-            _id: postIDtoGet,
-            likes: 1
-        }
 
-        const result = await postsCollection.countDocuments(conditionQuery)
-        if(result === 0) {
-            res.status(500).json({likesAmount: 0})
-        } else {
-            res.status(200).json(result)
+        const result = await postsCollection.findOne({_id: postIDtoGet})
+        if(!result) {
+            return res.status(404).send(`No post found with id: ${postIDtoGet}`)
         }
+        const likeArray = result.likes
+        const noOfLikes = likeArray.length
+        
+        res.status(200).json(noOfLikes)
 
     } catch (error) {
         res.status(500).send(`Internal server error - ${error}`)
