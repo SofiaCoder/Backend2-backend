@@ -19,7 +19,7 @@ exports.postPosts = async function postPosts(req, res) {
     const { postBody } = value;
     const dateTime = new Date().toLocaleString();
 
-    const posts = await postsCollection.insertOne({
+    const post = await postsCollection.insertOne({
       user_id: userID,
       username: username,
       date: dateTime,
@@ -28,7 +28,7 @@ exports.postPosts = async function postPosts(req, res) {
       likes: []
     });
 
-    res.status(200).json(`Text posted with id: ${posts}`);
+    res.status(200).send(post);
   } catch (error) {
     res.status(500).send(`Internal server error - ${error}`);
   }
