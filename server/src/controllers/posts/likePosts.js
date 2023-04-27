@@ -24,8 +24,13 @@ exports.likePosts = async function likePosts(req, res) {
         const usersHasLiked = likeArray.findIndex(user => user === username)
 
         if(usersHasLiked !== -1) {
-            return res.status(400).send("User already liked this post")
-        }       
+            const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$pull: {likes: username}})
+                if (result.modifiedCount === 0) {
+                    return res.status(404).send('Query didnt match any document. 0 document changed.')
+                } else {
+                    return res.status(200).send('User unliked this post')
+                }
+        }    
 
         const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$push: {likes: username}})
         if (result.modifiedCount === 0) {
