@@ -28,7 +28,7 @@ exports.postPosts = async function postPosts(req, res) {
       likes: []
     });
 
-    res.status(200).send(post);
+    res.status(200).json(post);
   } catch (error) {
     res.status(500).send(`Internal server error - ${error}`);
   }
