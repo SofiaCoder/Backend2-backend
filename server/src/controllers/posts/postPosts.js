@@ -19,16 +19,17 @@ exports.postPosts = async function postPosts(req, res) {
     const { postBody } = value;
     const dateTime = new Date().toLocaleString();
 
-    const post = await postsCollection.insertOne({
+    const post = {
       user_id: userID,
       username: username,
       date: dateTime,
       post: postBody,
       comments: [],
       likes: []
-    });
+    };
+    postsCollection.insertOne(post);
+    res.status(200).json(post);
 
-    res.status(200).send(post);
   } catch (error) {
     res.status(500).send(`Internal server error - ${error}`);
   }
