@@ -19,7 +19,7 @@ exports.postPosts = async function postPosts(req, res) {
     const dateTime = new Date().toLocaleString();
     const user = await usersCollection.findOne({ _id: new ObjectId(userID) });
 
-    const posts = await postsCollection.insertOne({
+    const post = await postsCollection.insertOne({
       user_id: userID,
       username: user.username,
       date: dateTime,
@@ -27,7 +27,7 @@ exports.postPosts = async function postPosts(req, res) {
       comments: [],
     });
 
-    res.status(200).send(`Text posted with id: ${posts.insertedId}`);
+    res.status(200).send(post);
   } catch (error) {
     res.status(500).send(`Internal server error - ${error}`);
   }
