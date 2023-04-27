@@ -28,7 +28,7 @@ exports.login = async function login(req, res) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
     res.cookie("authKey", token, {

@@ -5,9 +5,9 @@ const { ObjectId } = require('mongodb');
 exports.likePosts = async function likePosts(req, res) {
     try {
         const { postsCollection } = await main()
+        const username = req.username
 
         const schema = joi.object({
-            likeValue: joi.number().min(0).max(1).required(),
             postID: joi.string().required()
         })
 
@@ -16,15 +16,26 @@ exports.likePosts = async function likePosts(req, res) {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        const { likeValue, postID } = value;
+        const { postID } = value;
         const postIDtoPatch = new ObjectId(postID);
 
-        const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$set: {likes: likeValue}}, {upsert: true})
+        const post = await postsCollection.findOne({_id: postIDtoPatch})
+        const likeArray = post.likes
+        const usersHasLiked = likeArray.findIndex(user => user === username)
+
+        if(usersHasLiked !== -1) {
+            const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$pull: {likes: username}})
+                if (result.modifiedCount === 0) {
+                    return res.status(404).send('Query didnt match any document. 0 document changed.')
+                } 
+                return res.status(200).send('User unliked this post')
+        }    
+
+        const result = await postsCollection.updateOne({_id: postIDtoPatch}, {$push: {likes: username}})
         if (result.modifiedCount === 0) {
-            res.status(404).send('Query didnt match any document. 0 document changed.')
-        } else {
-            res.status(200).send('Like value updated')
-        }
+            return res.status(404).send('Query didnt match any document. 0 document changed.')
+        } 
+            return res.status(200).send('User liked this post')
         
 
     } catch (error) {
