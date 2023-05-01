@@ -4,7 +4,9 @@ const searchUsers = async (req, res) => {
   const { username } = req.params;
   const { usersCollection, postsCollection } = await main();
 
-  const user = await usersCollection.findOne({ username });
+  const user = await usersCollection.findOne({
+    username: username.toLowerCase(),
+  });
 
   if (!user) {
     return res.status(404).json({ message: "Användaren finns inte" });
