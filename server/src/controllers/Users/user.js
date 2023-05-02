@@ -9,7 +9,7 @@ const searchUsers = async (req, res) => {
   });
 
   if (!user) {
-    return res.status(404).json({ message: "Användaren finns inte" });
+    return res.status(404).json({ message: "The user does not exist" });
   }
 
   const searchedUserId = user._id.toString();

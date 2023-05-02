@@ -18,7 +18,7 @@ exports.login = async function login(req, res) {
     const { username, password } = value;
     const { usersCollection } = await main();
 
-    const user = await usersCollection.findOne({ username });
+    const user = await usersCollection.findOne({ username: username.toLowerCase() });
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }

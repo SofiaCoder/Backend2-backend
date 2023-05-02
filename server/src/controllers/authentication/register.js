@@ -14,13 +14,14 @@ exports.register = async function register(req, res) {
       return res.status(400).send(error.details[0].message)
     }
     
-    const { username, password } = value;
+    let { username, password } = value;
     const { usersCollection } = await main();
 
     const existingUser = await usersCollection.findOne({ username });
     if (existingUser) {
       return res.status(400).json({ message: "Username already taken" });
     }
+    username = username.toLowerCase()
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = { username, password: hashedPassword, friends: [] };
