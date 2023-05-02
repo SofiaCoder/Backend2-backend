@@ -13,8 +13,9 @@ exports.followUser = async function followUser(req, res) {
         if(error){
             return res.status(400).send(error.details[0].message)
         }
-        const { friendname } = value;
+        const friendname = value.friendname.toLowerCase();
         userIDtoinsert = new ObjectId(userID)
+
 
         const user = await usersCollection.findOne({_id: userIDtoinsert})
         const friendArray = user.friends
